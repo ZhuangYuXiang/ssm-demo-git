@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 启动自动扫描 -->
+    <!-- 扫描web层 -->
+    <context:component-scan base-package="com.zyx.web" />
+    <!-- 扫描service层 -->
+    <context:component-scan base-package="com.zyx.service" />
+    <!-- 扫描config包 -->
+    <context:component-scan base-package="com.zyx.config" />
+    <!-- 导入mybatis配置文件***解决项目启动时DAO层接口注入为NULL的情况 -->
+    <import resource="spring-mybatis.xml" />
+    <!-- 注册MVC注解驱动 -->
+    <mvc:annotation-driven />
+
+    <!-- 静态资源可访问的设置方式 -->
+    <mvc:default-servlet-handler />
+
+    <!-- 配置视图解析器，可以显式设置，也可以不设置，不设置会依据SpringMVC的默认设置 -->
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/page/" />
+        <property name="suffix" value=".html" />
+    </bean>
+
+    <!-- 注释掉拦截器,后期需要打印日志时,可以放开 -->
+    <!-- 注册拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*.do"/>
+            <mvc:exclude-mapping path="/hello.do"></mvc:exclude-mapping>
+            <bean class="com.zyx.web.interceptor.RequestInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

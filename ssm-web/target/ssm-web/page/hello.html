@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<meta name="csrf-token" content="<%= form_authenticity_token %>" />
+<meta name="csrf-param" content="authenticity_token" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="apply_link_form" method="post" action="/world.do">
+    <input name="admin" />
+    <button type="submit">点击提交</button>
+</form>
+<script type="text/javascript">
+    //ajax提交信息
+    $("#apply_link_form").submit(function(){
+        parent.layer.close(index); //再执行关闭
+        $.ajax({
+            async: false,
+            type: "POST",
+            url:'${pageContext.request.contextPath}/world',
+            xhrFields: {
+                withCredentials: true
+            },
+            contentType : "application/x-www-form-urlencoded; charset=utf-8",
+            data:$("#apply_link_form").serialize(),
+            dataType: "text",
+            success: function () {
+            },
+            error: function () {
+            }
+        })
+    })
+</script>
+</body>
+
+</html>
